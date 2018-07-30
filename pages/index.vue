@@ -3,40 +3,53 @@
       <v-content>
         <v-container>
           <v-layout row wrap align-center>
-            <v-flex xs12 md4>
-              <div class="text-xs-center">
-                <v-avatar size="125px">
-                  <img
-                    class="img-circle elevation-7 mb-1"
-                    src="https://raw.githubusercontent.com/vuetifyjs/docs/dev/static/doc-images/lists/1.jpg"
-                  >
-                </v-avatar>
-                <div class="headline">John <span style="font-weight:bold">Carter</span></div>
-                <div class="subheading text-xs-center grey--text pt-1 pb-3">Lorem ipsum dolor sit amet</div>
-                <v-layout justify-space-between>
-                  <a href="javascript:;" class="body-2">Home</a>
-                  <a href="javascript:;" class="body-2">About</a>
-                  <a href="javascript:;" class="body-2">Github</a>
-                  <a href="javascript:;" class="body-2">Other</a>
-                </v-layout>
-              </div>
-            </v-flex>
+
+            <template v-if="$store.state.user">
+              <v-flex xs12 md4>
+                <div class="text-xs-center">
+                  <v-avatar size="125px">
+                    <img
+                      class="img-circle elevation-7 mb-1"
+                      :src="$store.state.user.thumbnailUrl"
+                    >
+                  </v-avatar>
+                  <div class="headline"><span style="font-weight:bold">{{$store.state.user.name}}</span></div>
+                  <div class="subheading text-xs-center grey--text pt-1 pb-3">Lorem ipsum dolor sit amet</div>
+                  <v-layout justify-space-between>
+                    <a href="javascript:;" class="body-2">Home</a>
+                    <a href="javascript:;" class="body-2">About</a>
+                    <a href="javascript:;" class="body-2">Github</a>
+                    <a href="javascript:;" class="body-2">Other</a>
+                  </v-layout>
+                </div>
+              </v-flex>
+            </template>
+
+
+
             <v-flex xs12 md5 offset-md2>
-              <div v-for="post in posts" :key="post.title">
+              <div v-for="(post, index) in posts" :key="index">
                 <v-card class="my-3" hover>
                   <v-card-media
                     class="white--text"
                     height="170px"
-                    :src="post.imgUrl"
+                    :src="post.imageUrl"
                   >
-                    <v-container fill-height fluid>
+                    <!-- <v-container fill-height fluid>
                       <v-layout>
                         <v-flex xs12 align-end d-flex>
                           <span class="headline">{{ post.title }}</span>
                         </v-flex>
                       </v-layout>
-                    </v-container>
+                    </v-container> -->
                   </v-card-media>
+                  <v-container fill-height fluid>
+                    <v-layout>
+                      <v-flex xs12 align-end d-flex>
+                        <span class="headline">{{ post.title }}</span>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
                   <v-card-text>
                     {{ post.content }}
                   </v-card-text>
@@ -75,27 +88,25 @@
 </template>
 
 <script>
+import firebase from '~/plugins/firebase'
+
 export default {
+  created(){
+    const firebaseDatabase = firebase.database()
+    firebaseDatabase.ref('posts/').on('value', (snapshot) => {
+      this.posts = snapshot.val()
+    })
+  },
+  computed: {
+
+  },
+  methods: {
+
+  },
   data () {
       return {
         title: 'Your Logo',
-        posts: [
-          {
-            title: 'Fusce ullamcorper tellus',
-            content: 'Fusce ullamcorper tellus sed maximus rutrum. Donec imperdiet ultrices maximus. Donec non tellus non neque pellentesque fermentum. Aenean in pellentesque urna.',
-            imgUrl: 'https://raw.githubusercontent.com/vuetifyjs/docs/dev/static/doc-images/cards/drop.jpg'
-          },
-          {
-            title: 'Donec vitae suscipit lectus, a luctus diam.',
-            content: 'Donec vitae suscipit lectus, a luctus diam. Proin vitae felis gravida, lobortis massa sit amet, efficitur erat. Morbi vel ultrices nisi.',
-            imgUrl: 'https://raw.githubusercontent.com/vuetifyjs/docs/dev/static/doc-images/cards/docks.jpg'
-          },
-          {
-            title: 'Vestibulum condimentum quam',
-            content: 'At sagittis sapien vulputate. Vivamus laoreet lacus id magna rutrum dapibus. Donec vel pellentesque arcu. Maecenas mollis odio tempus felis elementum commodo.',
-            imgUrl: 'https://raw.githubusercontent.com/vuetifyjs/docs/dev/static/doc-images/cards/plane.jpg'
-          }
-        ]
+        posts: []
       }
     }
 }

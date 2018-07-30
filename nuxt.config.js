@@ -37,17 +37,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    '@/plugins/vue-swal'
   ],
-
-  // env: {
-  //   apiKey: "AIzaSyBAHazqLe44bJRe2DWXAKgD1EOQJz4I2e0",
-  //   authDomain: "insta-clone-bbe24.firebaseapp.com",
-  //   databaseURL: 'https://insta-clone-bbe24.firebaseio.com',
-  //   projectId: "insta-clone-bbe24",
-  //   storageBucket: "insta-clone-bbe24.appspot.com",
-  //   messagingSenderId: "989920782530"
-  // },
 
   /*
   ** Nuxt.js modules
@@ -55,17 +47,6 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios'
-    // {
-    //   src: '@rafamaciel/firebase',
-    //   options: {
-    //     apiKey: "AIzaSyBAHazqLe44bJRe2DWXAKgD1EOQJz4I2e0",
-    //     authDomain: "insta-clone-bbe24.firebaseapp.com",
-    //     databaseURL: "https://insta-clone-bbe24.firebaseio.com",
-    //     projectId: "insta-clone-bbe24",
-    //     storageBucket: "insta-clone-bbe24.appspot.com",
-    //     messagingSenderId: "989920782530"
-    //   }
-    // }
   ],
   /*
   ** Axios module configuration
@@ -81,6 +62,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    vendor: ['vue-swal'],
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {

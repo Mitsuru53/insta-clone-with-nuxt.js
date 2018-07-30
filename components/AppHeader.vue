@@ -22,7 +22,9 @@
       </nuxt-link>
     </v-btn>
     <v-btn icon>
-      <v-icon medium>person_outline</v-icon>
+      <nuxt-link to="/signup" tag="span">
+        <v-icon medium>person_outline</v-icon>
+      </nuxt-link>
     </v-btn>
   </v-toolbar>
 </template>
